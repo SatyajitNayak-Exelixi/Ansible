@@ -100,10 +100,15 @@ my_collection/
 └── README.md
 ```
 
-### Using a Collection
+### Using a Collection### Using a Collection
 
 ```
 - name: Use a custom module from a collection
   community.general.my_module:
     option: value
+```
+### Command to deploy Playbook File.
+
+```
+ansible-playbook -i inventory Playbook.yaml
 ```
