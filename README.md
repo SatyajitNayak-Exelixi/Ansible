@@ -51,56 +51,56 @@ ansible all --list-hosts
 ansible all -i inventory.ini --list-hosts
 ```
 
-👉 Use a custom inventory file.
+👉 Use a custom inventory file (`inventory.ini`).
 
 ```bash
-ansible all -m ping
+ansible all -m ping -i inventory.ini
 ```
 
-👉 Test connectivity to all hosts.
+👉 Test connectivity to all hosts using a custom inventory.
 
 ---
 
 ## 🔹 Ad-Hoc Commands
 
 ```bash
-ansible all -m ping
+ansible all -m ping -i inventory.ini
 ```
 
 👉 Check connectivity (ping module).
 
 ```bash
-ansible all -m command -a "uptime"
+ansible all -m command -a "uptime" -i inventory.ini
 ```
 
 👉 Run a command on all hosts.
 
 ```bash
-ansible web -m shell -a "df -h"
+ansible web -m shell -a "df -h" -i inventory.ini
 ```
 
 👉 Run a shell command on `web` group.
 
 ```bash
-ansible db -m yum -a "name=httpd state=present"
+ansible db -m yum -a "name=httpd state=present" -i inventory.ini
 ```
 
 👉 Install a package using the `yum` module.
 
 ```bash
-ansible all -m copy -a "src=/etc/hosts dest=/tmp/hosts"
+ansible all -m copy -a "src=/etc/hosts dest=/tmp/hosts" -i inventory.ini
 ```
 
 👉 Copy a file to remote hosts.
 
 ```bash
-ansible all -m file -a "path=/tmp/test state=directory"
+ansible all -m file -a "path=/tmp/test state=directory" -i inventory.ini
 ```
 
 👉 Create a directory.
 
 ```bash
-ansible all -m service -a "name=httpd state=started enabled=yes"
+ansible all -m service -a "name=httpd state=started enabled=yes" -i inventory.ini
 ```
 
 👉 Start and enable a service.
@@ -110,46 +110,46 @@ ansible all -m service -a "name=httpd state=started enabled=yes"
 ## 🔹 Playbooks
 
 ```bash
-ansible-playbook site.yml
+ansible-playbook main.yml -i inventory.ini
 ```
 
 👉 Run a playbook.
 
 ```bash
-ansible-playbook site.yml --syntax-check
+ansible-playbook main.yml --syntax-check -i inventory.ini
 ```
 
 👉 Check playbook syntax.
 
 ```bash
-ansible-playbook site.yml --list-tasks
+ansible-playbook main.yml --check -i inventory.ini
+```
+
+👉 Run playbook in check (dry-run) mode.
+
+```bash
+ansible-playbook main.yml --list-tasks -i inventory.ini
 ```
 
 👉 List all tasks in a playbook.
 
 ```bash
-ansible-playbook site.yml --list-hosts
+ansible-playbook main.yml --list-hosts -i inventory.ini
 ```
 
 👉 Show hosts targeted by a playbook.
 
 ```bash
-ansible-playbook site.yml --start-at-task="Install Packages"
+ansible-playbook main.yml --start-at-task="Install Packages" -i inventory.ini
 ```
 
 👉 Start execution from a specific task.
 
 ```bash
-ansible-playbook site.yml --step
+ansible-playbook main.yml --step -i inventory.ini
 ```
 
 👉 Run playbook step by step.
-
-```bash
-ansible-playbook site.yml -C
-```
-
-👉 Run in check (dry-run) mode.
 
 ---
 
@@ -208,13 +208,13 @@ ansible-vault decrypt file.yml
 👉 Decrypt a file.
 
 ```bash
-ansible-playbook site.yml --ask-vault-pass
+ansible-playbook main.yml --ask-vault-pass -i inventory.ini
 ```
 
 👉 Run a playbook with vault password prompt.
 
 ```bash
-ansible-playbook site.yml --vault-password-file .vault_pass.txt
+ansible-playbook main.yml --vault-password-file .vault_pass.txt -i inventory.ini
 ```
 
 👉 Run playbook with a password file.
@@ -224,19 +224,19 @@ ansible-playbook site.yml --vault-password-file .vault_pass.txt
 ## 🔹 Troubleshooting & Debugging
 
 ```bash
-ansible all -m ping -vvv
+ansible all -m ping -vvv -i inventory.ini
 ```
 
 👉 Increase verbosity for debugging.
 
 ```bash
-ansible-playbook site.yml -vvv
+ansible-playbook main.yml -vvv -i inventory.ini
 ```
 
 👉 Debug playbook execution.
 
 ```bash
-ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook site.yml
+ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook main.yml -i inventory.ini
 ```
 
 👉 Print detailed task output.
@@ -253,12 +253,9 @@ cat /etc/ansible/ansible.cfg
 
 ```ini
 [defaults]
-inventory = ./inventory
+inventory = ./inventory.ini
 host_key_checking = False
 retry_files_enabled = False
 ```
 
 👉 Common settings in `ansible.cfg`.
-
----
-
