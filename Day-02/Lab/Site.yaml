@@ -1,0 +1,38 @@
+---
+- hosts: webservers
+  become: yes                 # run tasks with sudo
+  vars:
+    git_repo: "https://github.com/mdn/beginner-html-site-styled.git"
+    git_version: "gh-pages"
+
+  tasks:
+    - name: Run apt-get update
+      apt:
+        update_cache: yes
+
+    - name: Install apache2 package
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Enable Mod Rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+
+    - name: Restart Apache service
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Clean Old Code (remove /var/www/html)
+      file:
+        path: /var/www/html
+        state: absent
+
+    - name: Checking out code from GitHub
+      git:
+        repo: "{{ git_repo }}"
+        dest: /var/www/html
+        version: "{{ git_version }}"
